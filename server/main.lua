@@ -130,8 +130,15 @@ function IsAuthorized(xPlayer, doorID, locked, usedLockpick)
 	return canOpen
 end
 
-RegisterCommand('newdoor', function(playerId, args, rawCommand)
-	TriggerClientEvent('nui_doorlock:newDoorSetup', playerId, args)
+RegisterCommand("newdoor", function(playerId, args, rawCommand)
+	local _source = playerId
+	local xPlayer = ESX.GetPlayerFromId(_source)
+	local group = xPlayer.getGroup()
+
+	if group == 'moderator' or group == 'admin'or group == 'superadmin' or IsPlayerAceAllowed(playerId, "doorlock.new") then
+		TriggerClientEvent('nui_doorlock:newDoorSetup', playerId, args)
+	end
+		
 end, true)
 
 RegisterServerEvent('nui_doorlock:newDoorCreate')
